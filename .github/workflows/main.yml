@@ -1,0 +1,26 @@
+name: Run Node App
+
+on:
+  workflow_dispatch: # bisa dijalankan manual dari tab Actions
+
+jobs:
+  run-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start app
+        run: |
+          npm start &
+          sleep 10
+          curl http://localhost:3000
