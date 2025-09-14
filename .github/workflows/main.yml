@@ -6,6 +6,8 @@ on:
   pull_request:
     branches: [ "main" ]   # juga jalan saat ada PR ke main
   workflow_dispatch:        # bisa dijalankan manual dari tab Actions
+  schedule:
+    - cron: "0 * * * *" 
 
 jobs:
   run-bot:
