@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: "0 0 * * *"   # setiap hari jam 07:00 WIB (ingat: UTC+0)
+    - cron: "0 0 * * *"   # setiap hari jam 07:00 WIB (karena UTC+0)
   workflow_dispatch:
 
 jobs:
@@ -21,16 +21,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22'
-          cache: 'pnpm'
-          cache-dependency-path: pnpm-lock.yaml
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm ci   # lebih cepat dan konsisten daripada npm install
 
       - name: Run bot script
         run: node index.js
