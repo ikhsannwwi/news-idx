@@ -5,9 +5,9 @@ on:
     branches: [ "main" ]   # jalan otomatis tiap push ke branch main
   pull_request:
     branches: [ "main" ]   # juga jalan saat ada PR ke main
-  workflow_dispatch:        # bisa dijalankan manual dari tab Actions
   schedule:
-    - cron: "0 * * * *" 
+    - cron: "0 7 * * *"   # jalan setiap hari jam 07:00 UTC
+  workflow_dispatch:        # bisa dijalankan manual dari tab Actions
 
 jobs:
   run-bot:
@@ -21,11 +21,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22'
-          cache: 'npm'               # caching dependencies
-          cache-dependency-path: '**/package-lock.json'
+          cache: 'pnpm'               # caching dependencies
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: Run bot script
         run: node index.js
