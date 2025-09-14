@@ -28,4 +28,9 @@ jobs:
         run: npm ci   # lebih cepat dan konsisten daripada npm install
 
       - name: Run bot script
+        env:
+            TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+            CHAT_ID: ${{ secrets.CHAT_ID }}
+            GROUP_ID: ${{ secrets.GROUP_ID }}
+            TOPIC_ID: ${{ secrets.TOPIC_ID }}
         run: node index.js
