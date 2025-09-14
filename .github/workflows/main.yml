@@ -2,12 +2,12 @@ name: Run Telegram Stock Bot
 
 on:
   push:
-    branches: [ "main" ]   # jalan otomatis tiap push ke branch main
+    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]   # juga jalan saat ada PR ke main
+    branches: [ "main" ]
   schedule:
-    - cron: "0 7 * * *"   # jalan setiap hari jam 07:00 UTC
-  workflow_dispatch:        # bisa dijalankan manual dari tab Actions
+    - cron: "0 0 * * *"   # setiap hari jam 07:00 WIB (ingat: UTC+0)
+  workflow_dispatch:
 
 jobs:
   run-bot:
@@ -21,13 +21,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22'
-          cache: 'pnpm'               # caching dependencies
+          cache: 'pnpm'
           cache-dependency-path: pnpm-lock.yaml
 
       - name: Setup pnpm
-          uses: pnpm/action-setup@v4
-          with:
-            version: 10   # pakai versi pnpm terbaru yang kamu pakai
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
 
       - name: Install dependencies
         run: pnpm install
