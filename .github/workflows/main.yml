@@ -24,6 +24,11 @@ jobs:
           cache: 'pnpm'               # caching dependencies
           cache-dependency-path: pnpm-lock.yaml
 
+      - name: Setup pnpm
+          uses: pnpm/action-setup@v4
+          with:
+            version: 10   # pakai versi pnpm terbaru yang kamu pakai
+
       - name: Install dependencies
         run: pnpm install
 
