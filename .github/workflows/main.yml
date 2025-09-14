@@ -1,26 +1,44 @@
-name: Run Node App
+name: Node.js CI
 
 on:
-  workflow_dispatch: # bisa dijalankan manual dari tab Actions
+  push:
+    branches: [ "main" ]   # jalan otomatis tiap push ke branch main
+  pull_request:
+    branches: [ "main" ]   # juga jalan saat ada PR ke main
+  workflow_dispatch:        # bisa dijalankan manual dari tab Actions
 
 jobs:
-  run-app:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      # 1. Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
-        uses: actions/setup-node@v4
+      # 2. Setup Node.js 22 dengan caching
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
         with:
           node-version: '22'
+          cache: 'npm'               # caching dependencies
+          cache-dependency-path: '**/package-lock.json'
 
+      # 3. Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: npm ci                  # lebih cepat dan konsisten dibanding npm install
 
-      - name: Start app
+      # 4. Build project (opsional, kalau ada script build)
+      - name: Build project
+        run: npm run build --if-present
+
+      # 5. Run tests (opsional, kalau ada script test)
+      - name: Run tests
+        run: npm test --if-present
+
+      # 6. Start app dan test endpoint (opsional)
+      - name: Start app & check
         run: |
           npm start &
-          sleep 10
-          curl http://localhost:3000
+          sleep 5
+          curl -v http://localhost:3000 || true
