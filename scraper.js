@@ -7,7 +7,13 @@ function formatNews(source, title, link, time) {
 
 async function getCNBCNews() {
   try {
-    const res = await axios.get("https://www.cnbcindonesia.com/market/rss");
+    const res = await axios.get("https://www.cnbcindonesia.com/market/rss", {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/rss+xml,application/xml",
+      },
+    });
     const $ = cheerio.load(res.data, { xmlMode: true });
 
     const news = [];
