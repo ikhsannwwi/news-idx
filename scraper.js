@@ -6,31 +6,30 @@ function formatNews(source, title, link, time) {
 }
 
 async function getCNBCNews() {
-  const res = await axios.get("https://www.cnbcindonesia.com/market", {
-    headers: {
-      "User-Agent":
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      "Accept":
-        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-      "Accept-Language": "id-ID,id;q=0.9,en-US;q=0.8,en;q=0.7",
-    },
-    timeout: 10000,
-  });
+  try {
+    const res = await axios.get("https://www.cnbcindonesia.com/market/rss");
+    const $ = cheerio.load(res.data, { xmlMode: true });
 
-  const $ = cheerio.load(res.data);
-  const articles = $("article a.group.flex");
-  const news = [];
+    const news = [];
+    $("item").each((i, el) => {
+      const title = $(el).find("title").text().trim();
+      const link = $(el).find("link").text().trim();
+      const time = $(el).find("pubDate").text().trim();
+      if (title && link) {
+        news.push({
+          source: "CNBC Indonesia",
+          title,
+          link,
+          time,
+        });
+      }
+    });
 
-  articles.each((i, el) => {
-    const title = $(el).find("h2").text().trim();
-    const link = $(el).attr("href");
-    const time = $(el).find(".text-gray").text().trim();
-    if (title && link) {
-      news.push(formatNews("CNBC Indonesia", title, link, time));
-    }
-  });
-
-  return news.slice(0, 5);
+    return news.slice(0, 5);
+  } catch (err) {
+    console.error("Gagal ambil RSS:", err.message);
+    return [];
+  }
 }
 
 async function getKontanNews() {
