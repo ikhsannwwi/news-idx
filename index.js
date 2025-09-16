@@ -64,7 +64,8 @@ bot.onText(/\/news/, async (msg) => {
 
 // === Cron otomatis ===
 // kirim tiap jam 7 pagi ke grup + topik tertentu
-cron.schedule('0 7 * * *', () => {
-  console.log("⏰ Cron jalan, kirim berita ke topik...")
-  sendNews(groupId, topicId)
-})
+// cron.schedule('0 7 * * *', () => {
+//   console.log("⏰ Cron jalan, kirim berita ke topik...")
+//   sendNews(groupId, topicId)
+// })
+sendNews(groupId, topicId)
