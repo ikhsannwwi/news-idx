@@ -1,5 +1,6 @@
 const axios = require('axios')
 const cheerio = require('cheerio')
+const HttpsProxyAgent = require("https-proxy-agent");
 
 function formatNews(source, title, link, time) {
   return { source, title, link, time }
@@ -7,7 +8,9 @@ function formatNews(source, title, link, time) {
 
 async function getCNBCNews() {
   try {
+    const HttpsProxyAgent = require("https-proxy-agent");
     const res = await axios.get("https://www.cnbcindonesia.com/market/rss", {
+      httpsAgent: agent,
       headers: {
         "User-Agent":
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
